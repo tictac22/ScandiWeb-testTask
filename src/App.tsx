@@ -16,14 +16,12 @@ export class App extends React.Component {
 				<Provider store={store}>
 					<Header />
 					<Wrapper id="main_home">
-						<React.Suspense fallback={<div></div>}>
-							<Switch>
-								<Route exact={true} path={"/"} component={HomePage} />
-								<Route exact={true} path={"/:product"} component={HomePage} />
-								<Route exact={true} path={"/product/:id"} component={ProductPage} />
-								<Route exact={true} path={"/user/cart"} component={Cart} />
-							</Switch>
-						</React.Suspense>
+						<Switch>
+							<Route exact={true} path={"/"} component={HomePage} />
+							<Route exact={true} path={"/:product"} component={HomePage} />
+							<Route exact={true} path={"/product/:id"} component={ProductPage} />
+							<Route exact={true} path={"/user/cart"} component={Cart} />
+						</Switch>
 					</Wrapper>
 				</Provider>
 			</Router>

@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import { CartItemProps } from "../interfaces"
-import { getCurrentPrice } from "../lib/functions"
-import { AttributesSelectedItems } from "./attributesItems/attributesSelectedItems"
+import { CartItemProps } from "../../interfaces"
+import { getCurrentPrice } from "../../lib/functions"
+import { AttributesSelectedItems } from "../attributesItems/attributesSelectedItems"
 
-import { MapDispatchToProps } from "../pages/cart"
+import { MapDispatchToProps } from "../../pages/cart"
 import { CartImageSlider } from "./cartImageSlider"
 
 export class CartItem extends React.PureComponent<CartItemProps & MapDispatchToProps> {
@@ -75,6 +75,7 @@ const Counter = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	cursor: pointer;
 	@media (max-width: 600px) {
 		flex-direction: row;
 		width: 100%;

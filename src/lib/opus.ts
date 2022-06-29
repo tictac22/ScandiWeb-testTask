@@ -1,8 +1,11 @@
 import { client, Field, Query } from "@tilework/opus"
 
-client.setEndpoint("http://localhost:4000/")
-// Single requests
-
+//https://testtak-backend.herokuapp.com
+client.setEndpoint("https://testtak-backend.herokuapp.com")
+client.setHeaders({
+	"Access-Control-Allow-Origin": "https://stellular-travesseiro-7f8550.netlify.app",
+	"Access-Control-Allow-Credentials": "true"
+})
 export const getProductsByCategory = async (title: string) => {
 	const query = new Query("category")
 		.addArgument("input", "CategoryInput", { title })

@@ -12,49 +12,54 @@ class CartC extends React.Component<PropsRedux> {
 		return (
 			<div className="container">
 				<Title>cart</Title>
-				<div>
-					{this.props.cartItems.length > 0 &&
-						this.props.cartItems.map((item) => (
-							<CartItem
-								name={item.name}
-								key={`${item.name} + ${item.attributes.map((item) => item.value).toString()}`}
-								id={item.id}
-								gallery={item.gallery}
-								attributes={item.attributes}
-								prices={item.prices}
-								count={item.count}
-								currentCurrency={this.props.currentCurrency.label}
-								incrementCountItem={this.props.incrementCountItem}
-								decrementCountItem={this.props.decrementCountItem}
-							/>
-						))}
-				</div>
-				<Total>
-					<TotalWrapper>
-						<TotalName margin={10}>Tax 21%:</TotalName>
-						<TotalPrice>
-							{this.props.currentCurrency.symbol}
-							{formatNumber(tax)}
-						</TotalPrice>
-					</TotalWrapper>
-					<TotalWrapper>
-						<TotalName margin={0}>Quantity:</TotalName>
-						<TotalPrice>{this.props.totalCount}</TotalPrice>
-					</TotalWrapper>
-					<TotalWrapper>
-						<TotalName margin={44} style={{ fontWeight: "500" }}>
-							Total:
-						</TotalName>
-						<TotalPrice>
-							{this.props.currentCurrency.symbol}
-							{this.props.totalPrice}
-							<p style={{ display: "inline-block", margin: "0 5px" }}>+ Tax =</p>
-							{this.props.currentCurrency.symbol}
-							{formatNumber(this.props.totalPriceInNumber + tax)}
-						</TotalPrice>
-					</TotalWrapper>
-				</Total>
-				<Button className="btn">order</Button>
+				{this.props.cartItems.length <= 0 ? (
+					<p style={{ textAlign: "center" }}>Your cart is empty, select any product to see it</p>
+				) : (
+					<>
+						<div>
+							{this.props.cartItems.map((item) => (
+								<CartItem
+									name={item.name}
+									key={`${item.name} + ${item.attributes.map((item) => item.value).toString()}`}
+									id={item.id}
+									gallery={item.gallery}
+									attributes={item.attributes}
+									prices={item.prices}
+									count={item.count}
+									currentCurrency={this.props.currentCurrency.label}
+									incrementCountItem={this.props.incrementCountItem}
+									decrementCountItem={this.props.decrementCountItem}
+								/>
+							))}
+						</div>
+						<Total>
+							<TotalWrapper>
+								<TotalName margin={10}>Tax 21%:</TotalName>
+								<TotalPrice>
+									{this.props.currentCurrency.symbol}
+									{formatNumber(tax)}
+								</TotalPrice>
+							</TotalWrapper>
+							<TotalWrapper>
+								<TotalName margin={0}>Quantity:</TotalName>
+								<TotalPrice>{this.props.totalCount}</TotalPrice>
+							</TotalWrapper>
+							<TotalWrapper>
+								<TotalName margin={44} style={{ fontWeight: "500" }}>
+									Total:
+								</TotalName>
+								<TotalPrice>
+									{this.props.currentCurrency.symbol}
+									{this.props.totalPrice}
+									<p style={{ display: "inline-block", margin: "0 5px" }}>+ Tax =</p>
+									{this.props.currentCurrency.symbol}
+									{formatNumber(this.props.totalPriceInNumber + tax)}
+								</TotalPrice>
+							</TotalWrapper>
+						</Total>
+						<Button className="btn">order</Button>
+					</>
+				)}
 			</div>
 		)
 	}

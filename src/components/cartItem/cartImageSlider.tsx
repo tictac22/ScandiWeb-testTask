@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import arrowLeft from "../public/arrowLeft.svg"
-import arrowRight from "../public/arrowRight.svg"
+import arrowLeft from "../../public/arrowLeft.svg"
+import arrowRight from "../../public/arrowRight.svg"
 
 interface Props {
 	gallery: string[]
@@ -25,11 +25,11 @@ export class CartImageSlider extends React.Component<Props, State> {
 	prevSlide = () => {
 		const state = this.state.currentImage
 		const gallery = this.state.gallery
-		const nextIndex = state - 1
-		if (nextIndex < 0) {
+		const prevIndex = state - 1
+		if (prevIndex < 0) {
 			this.setState({ currentImage: gallery.length - 1 })
 		} else {
-			this.setState({ currentImage: nextIndex })
+			this.setState({ currentImage: prevIndex })
 		}
 	}
 	constructor(props: Props) {
@@ -43,7 +43,7 @@ export class CartImageSlider extends React.Component<Props, State> {
 		return (
 			<Wrapper>
 				{this.props.gallery.map((item, i) => (
-					<Slide active={i === this.state.currentImage ? true : false}>
+					<Slide key={item + i} active={i === this.state.currentImage ? true : false}>
 						<img src={item} alt={this.props.name} />
 					</Slide>
 				))}

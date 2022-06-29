@@ -13,7 +13,7 @@ interface State {
 	products: IProduct[]
 }
 
-class Home extends React.Component<RouteComponentProps, State> {
+class Home extends React.Component<RouteComponentProps<{ product: string }>, State> {
 	constructor(props: any) {
 		super(props)
 		this.state = {
@@ -24,9 +24,10 @@ class Home extends React.Component<RouteComponentProps, State> {
 	}
 	getProducts = async () => {
 		this.setState({ isLoading: true })
-		const path = this.props.match.url.split("/")[1]
+		console.log(this.props)
+		const category = this.props.match.params.product ?? "all"
 		try {
-			const data = await getProductsByCategory(path)
+			const data = await getProductsByCategory(category)
 			const products = data.products as unknown as IProduct[]
 			this.setState({ products, isLoading: false })
 		} catch (error) {
