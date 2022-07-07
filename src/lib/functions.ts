@@ -21,7 +21,7 @@ export const createText = (attributes: State[]) => {
 }
 export const addPaging = (isActive: boolean) => {
 	const scrollWidth = window.innerWidth - document.documentElement.clientWidth
-	const pageBody = document.querySelector("body")!
+	const pageBody = document.body
 	if (isActive) {
 		pageBody.style.paddingRight = `0px`
 		pageBody.classList.remove("_lock")

@@ -3,7 +3,6 @@ import { RouteComponentProps, withRouter } from "react-router-dom"
 import styled from "styled-components"
 import { Product } from "../components/homeProduct"
 import { Spinner } from "../components/spinner"
-import { Toast } from "../components/toast"
 import { IProduct } from "../interfaces"
 import { getProductsByCategory } from "../lib/opus"
 
@@ -45,7 +44,6 @@ class Home extends React.Component<RouteComponentProps<{ product: string }>, Sta
 		return (
 			<main>
 				<WrapperInner className="container">
-					<Toast />
 					<PageTitle>{this.props.match.url.split("/")[1] || "all"}</PageTitle>
 					{this.state.isLoading ? (
 						<Spinner />
@@ -86,7 +84,6 @@ const ProductWrapper = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(285px, 300px));
 	grid-gap: 40px;
-	justify-content: center;
 	@media (min-width: 576px) {
 		margin-top: 55px;
 	}

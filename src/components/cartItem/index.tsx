@@ -13,6 +13,7 @@ export class CartItem extends React.PureComponent<CartItemProps & MapDispatchToP
 		return (
 			<Wrapper>
 				<CartInfo>
+					<div>{this.props.brand}</div>
 					<CartName>{this.props.name}</CartName>
 					<CartPrice>{getCurrentPrice(this.props.currentCurrency, this.props.prices)}</CartPrice>
 					<AttributesWrapper>

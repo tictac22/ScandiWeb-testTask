@@ -2,21 +2,19 @@ import React from "react"
 import styled from "styled-components"
 
 import { Link, RouteComponentProps, withRouter } from "react-router-dom"
+import { getHeaderInfo } from "../../lib/opus"
 import logo from "../../public/logo.png"
 import { Cart } from "./cart"
 import { CurrencySwitcher } from "./currency"
+import { IHeader, State } from "./header"
 
-const pages = [
-	{ name: "All", url: "/" },
-	{ name: "Clothes", url: "/clothes" },
-	{ name: "Tech", url: "/tech" }
-]
-
-class header extends React.Component<RouteComponentProps, { active: string }> {
+class header extends React.Component<RouteComponentProps, State> {
 	constructor(props: any) {
 		super(props)
 		this.state = {
-			active: "All"
+			active: "All",
+			categories: [],
+			currencies: []
 		}
 	}
 	ref = React.createRef<HTMLDivElement>()
@@ -34,6 +32,10 @@ class header extends React.Component<RouteComponentProps, { active: string }> {
 		}
 	}
 	componentDidMount() {
+		getHeaderInfo().then((data) => {
+			const typedData = data as unknown as IHeader
+			this.setState({ categories: typedData.categories, currencies: typedData.currencies })
+		})
 		this.setState({ active: this.props.history.location.pathname.split("/")[1] || "All" })
 		window.addEventListener("scroll", this.addStickyHeader)
 	}
@@ -46,12 +48,12 @@ class header extends React.Component<RouteComponentProps, { active: string }> {
 				<HeaderInner>
 					<nav>
 						<Ul>
-							{pages.map((item) => (
+							{this.state.categories.map((item) => (
 								<Li
 									key={item.name}
 									active={this.state.active.toLowerCase() === item.name.toLowerCase() ? true : false}
 								>
-									<Link onClick={this.activeLink(item.name)} to={item.url}>
+									<Link onClick={this.activeLink(item.name)} to={`/${item.name}`}>
 										{item.name}
 									</Link>
 								</Li>
@@ -62,7 +64,7 @@ class header extends React.Component<RouteComponentProps, { active: string }> {
 						<img src={logo} alt="Logo" />
 					</div>
 					<Actions>
-						<CurrencySwitcher />
+						<CurrencySwitcher currencies={this.state.currencies} />
 						<Cart />
 					</Actions>
 				</HeaderInner>

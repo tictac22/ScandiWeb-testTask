@@ -2,56 +2,33 @@ import React from "react"
 import { connect, ConnectedProps } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { IProduct, ProductState } from "../interfaces"
-import { createText, getCurrentPrice } from "../lib/functions"
+import { IProduct } from "../interfaces"
+import { getCurrentPrice } from "../lib/functions"
 import cart from "../public/cartWhite.svg"
 import { addToCart } from "../redux/slicers/cartSlice"
-import { hideToast, showToast } from "../redux/slicers/toastSlice"
 import { RootState } from "../redux/store"
-import { AttributesItems } from "./attributesItems"
 
 type Props = IProduct & PropsRedux
 
-class ProductItem extends React.Component<Props, { attributes: ProductState[] }> {
-	constructor(props: Props) {
-		super(props)
-		this.state = {
-			attributes: [
-				...this.props.attributes.map((item) => ({
-					name: item.name,
-					selected: false,
-					items: item.items,
-					type: item.type,
-					value: ""
-				}))
-			]
-		}
-	}
+class ProductItem extends React.Component<Props> {
 	ref = React.createRef<HTMLAnchorElement>()
 	pushTo = (isAvaible: boolean) => {
 		return (e: React.MouseEvent) => {
 			if (!isAvaible) e.preventDefault()
 		}
 	}
-	handleAttribute = (e: React.MouseEvent, name: string, value: string) => {
-		e.preventDefault()
-		let attribute = this.state.attributes.findIndex((item) => item.name === name)!
-		let state = [...this.state.attributes]
 
-		state[attribute] = { ...state[attribute], selected: true, value }
-		this.setState({ attributes: state })
-	}
 	addToCart = (e: React.MouseEvent) => {
 		e.preventDefault()
-		if (this.state.attributes.find((item) => item.selected === false)) {
-			this.props.showToast({ productName: this.props.name, text: createText(this.state.attributes) })
-			return
-		}
-
+		const attributes = this.props.attributes.map((item) => ({
+			...item,
+			selected: true,
+			value: item.items[0].value
+		}))
 		this.props.addToCart({
 			name: this.props.name,
 			id: this.props.id,
-			attributes: this.state.attributes,
+			attributes,
 			prices: this.props.prices,
 			gallery: this.props.gallery,
 			brand: this.props.brand
@@ -70,12 +47,6 @@ class ProductItem extends React.Component<Props, { attributes: ProductState[] }>
 						<Name>{this.props.name}</Name>
 						<Price>{getCurrentPrice(this.props.price.label, this.props.prices)}</Price>
 						<Attributes>
-							<AttributesItems
-								handleAttribute={this.handleAttribute}
-								inStock={this.props.inStock}
-								attributes={this.props.attributes}
-								stateAttributes={this.state.attributes}
-							/>
 							{this.props.inStock && (
 								<Cart onClick={this.addToCart} className="cart">
 									<img src={cart} alt="put to cart" />
@@ -88,15 +59,14 @@ class ProductItem extends React.Component<Props, { attributes: ProductState[] }>
 		)
 	}
 }
+
 const mapStateToProps = (state: RootState) => {
 	return {
 		price: state.cart.currency
 	}
 }
 const mapDispatchToProps = {
-	addToCart,
-	showToast,
-	hideToast
+	addToCart
 }
 const connector = connect(mapStateToProps, mapDispatchToProps)
 type PropsRedux = ConnectedProps<typeof connector>
@@ -170,7 +140,7 @@ const Description = styled.div`
 
 const Name = styled.p`
 	margin-top: 6px;
-	font-weight: 300;
+	font-weight: 500;
 `
 
 const Price = styled.p`

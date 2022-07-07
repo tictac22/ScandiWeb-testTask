@@ -1,26 +1,22 @@
 import React from "react"
 import { connect, ConnectedProps } from "react-redux"
 import styled from "styled-components"
-import { getCurrencies } from "../../lib/opus"
 import arrow from "../../public/arrow.svg"
 import { changeCurrency } from "../../redux/slicers/cartSlice"
 import { RootState } from "../../redux/store"
+import { Currencies } from "./header"
 
-interface Currency {
-	label: string
-	symbol: string
-}
 interface State {
 	currencyMenu: boolean
-	currencies: Currency[]
 }
-
+interface Props extends PropsRedux {
+	currencies: Currencies[]
+}
 class Cs extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props)
 		this.state = {
-			currencyMenu: false,
-			currencies: []
+			currencyMenu: false
 		}
 	}
 
@@ -41,10 +37,6 @@ class Cs extends React.Component<Props, State> {
 	}
 	componentDidMount() {
 		window.addEventListener("click", this.handleClickOutside)
-		getCurrencies().then((currencies) => {
-			let typedCurrencies = currencies as unknown as Currency[]
-			this.setState({ currencies: typedCurrencies })
-		})
 	}
 
 	componentWillUnmount() {
@@ -60,8 +52,8 @@ class Cs extends React.Component<Props, State> {
 				</div>
 				<Menu active={this.state.currencyMenu}>
 					<ul>
-						{this.state.currencies.length > 0 &&
-							this.state.currencies.map((item) => (
+						{this.props.currencies.length > 0 &&
+							this.props.currencies.map((item) => (
 								<MenuLi
 									key={item.label}
 									onClick={() => {
@@ -78,7 +70,6 @@ class Cs extends React.Component<Props, State> {
 		)
 	}
 }
-//selected={true}
 const mapStateToProps = (state: RootState) => {
 	return {
 		price: state.cart.currency
@@ -88,7 +79,7 @@ const mapDispatchToProps = {
 	changeCurrency
 }
 const connector = connect(mapStateToProps, mapDispatchToProps)
-type Props = ConnectedProps<typeof connector>
+type PropsRedux = ConnectedProps<typeof connector>
 
 export const CurrencySwitcher = connector(Cs)
 

@@ -1,7 +1,7 @@
-import { client, Field, Query } from "@tilework/opus"
-
+import { client, CombinedField, Field, Query } from "@tilework/opus"
+//http://localhost:4000/
 //https://testtak-backend.herokuapp.com
-client.setEndpoint("http://localhost:4000/")
+client.setEndpoint("https://testtak-backend.herokuapp.com")
 client.setHeaders({
 	"Access-Control-Allow-Origin": "https://stellular-travesseiro-7f8550.netlify.app",
 	"Access-Control-Allow-Credentials": "true"
@@ -45,8 +45,9 @@ export const getProductById = async (id: string) => {
 	return queryResult.product
 }
 
-export const getCurrencies = async () => {
-	const query = new Query("currencies").addFieldList(["label", "symbol"])
-	const queryResult = await client.post(query)
-	return queryResult.currencies
+export const getHeaderInfo = async () => {
+	const queryCurrency = new Query("currencies").addFieldList(["label", "symbol"])
+	const queryCategories = new Query("categories").addField("name")
+	const combinedQueryResult = await client.post(new CombinedField().add(queryCurrency).add(queryCategories))
+	return combinedQueryResult
 }

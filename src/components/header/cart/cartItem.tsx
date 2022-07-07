@@ -58,7 +58,7 @@ const Description = styled.div`
 	flex-grow: 1;
 `
 const Title = styled.h5`
-	font-weight: 300;
+	font-weight: 600;
 	margin-top: 5px;
 `
 
