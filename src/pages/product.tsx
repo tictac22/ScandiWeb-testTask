@@ -36,7 +36,8 @@ class Products extends Component<Props, State> {
 				gallery: [],
 				prices: [],
 				attributes: [],
-				id: ""
+				id: "",
+				brand: ""
 			},
 			mainImage: "",
 			attributes: [],
@@ -92,6 +93,7 @@ class Products extends Component<Props, State> {
 					<Wrapper>
 						<ProductGallery name={this.state.pageData.name} gallery={this.state.pageData.gallery} />
 						<Info>
+							<div>{this.state.pageData.brand}</div>
 							<Title>{this.state.pageData.name}</Title>
 							<AttributesWrapper>
 								<AttributesItems

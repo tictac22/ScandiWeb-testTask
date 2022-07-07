@@ -14,6 +14,7 @@ class CartItemC extends React.Component<Props> {
 		return (
 			<Wrapper className="cartItemOverlay">
 				<Description>
+					<div>{this.props.brand}</div>
 					<Title>{this.props.name}</Title>
 					<Price>{getCurrentPrice(this.props.currentCurrency, this.props.prices)}</Price>
 					<AttributesWrapper>
@@ -58,6 +59,7 @@ const Description = styled.div`
 `
 const Title = styled.h5`
 	font-weight: 300;
+	margin-top: 5px;
 `
 
 const Price = styled.p`

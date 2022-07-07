@@ -23,10 +23,10 @@ export const addPaging = (isActive: boolean) => {
 	const scrollWidth = window.innerWidth - document.documentElement.clientWidth
 	const pageBody = document.querySelector("body")!
 	if (isActive) {
-		document.body.style.paddingRight = `0px`
+		pageBody.style.paddingRight = `0px`
 		pageBody.classList.remove("_lock")
 	} else {
-		document.body.style.paddingRight = `${scrollWidth}px`
+		pageBody.style.paddingRight = `${scrollWidth}px`
 		pageBody.classList.add("_lock")
 	}
 }

@@ -19,6 +19,7 @@ interface CartItems {
 	gallery: string[]
 	attributes: CartAttributes[]
 	prices: CartStatePrice[]
+	brand: string
 }
 
 interface CartAttributes {

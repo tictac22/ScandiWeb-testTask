@@ -30,16 +30,19 @@ export class ProductGallery extends React.PureComponent<Props, State> {
 				</GalleryMain>
 				{this.props.gallery.length > 1 && (
 					<GalleryWrapper>
-						{this.props.gallery.map((item, index) => (
-							<GalleryImage
-								onClick={() => {
-									this.changeImage(index)
-								}}
-								key={item}
-							>
-								<img src={item} alt={this.props.name} />
-							</GalleryImage>
-						))}
+						<GalleryInner extended={this.props.gallery.length > 5}>
+							{this.props.gallery.map((item, index) => (
+								<GalleryItem key={item}>
+									<GalleryImage
+										onClick={() => {
+											this.changeImage(index)
+										}}
+									>
+										<img src={item} alt={this.props.name} />
+									</GalleryImage>
+								</GalleryItem>
+							))}
+						</GalleryInner>
 					</GalleryWrapper>
 				)}
 			</Gallery>
@@ -48,10 +51,11 @@ export class ProductGallery extends React.PureComponent<Props, State> {
 }
 
 const Gallery = styled.div`
-	display: flex;
+	@media (min-width: 920px) {
+		display: flex;
+	}
 	flex: 0 1 65%;
 	@media (max-width: 920px) {
-		flex-direction: column;
 		text-align: center;
 	}
 `
@@ -65,6 +69,9 @@ const GalleryMain = styled.div`
 	& img {
 		max-width: 100%;
 		object-fit: cover;
+		@media (max-width: 920px) {
+			width: 100%;
+		}
 		@media (min-width: 920px) {
 			max-height: 511px;
 			flex-basis: 610px;
@@ -74,38 +81,55 @@ const GalleryMain = styled.div`
 `
 
 const GalleryWrapper = styled.div`
-	display: grid;
-	grid-auto-flow: column;
-	grid-template-columns: repeat(minmax(1, 4), 80px);
-	grid-template-rows: repeat(4, 80px);
-	grid-row-gap: 40px;
-	grid-column-gap: 20px;
-	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	@media (min-width: 920px) {
-		margin-top: 0px;
 		margin-right: 40px;
-	}
-	@media (max-width: 920px) {
-		flex-wrap: wrap;
-		display: flex;
-		justify-content: center;
-		/*grid-template-columns: repeat(auto-fit, minmax(80px, 80px));
-
-		grid-template-rows: 1fr;*/
+		& div:not(:first-child) {
+			margin-top: 20px;
+		}
 	}
 `
-
-const GalleryImage = styled.div`
-	transition: all 0.3s linear;
-	width: 80px;
-	height: 80px;
+interface IGalleryInner {
+	extended: boolean
+}
+const GalleryInner = styled.div<IGalleryInner>`
+	@media (max-width: 920px) {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 82px);
+		grid-gap: 20px;
+		justify-content: center;
+	}
+	@media (min-width: 920px) {
+		max-height: ${(props) => (props.extended ? "500px" : "none")};
+		overflow-y: ${(props) => (props.extended ? "scroll" : "none")};
+		padding-left: ${(props) => (props.extended ? "6px" : "0px")};
+		direction: rtl;
+		&::-webkit-scrollbar {
+			appearance: none;
+			width: 3px;
+		}
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 0.25rem;
+		background-color: rgba(0, 0, 0, 0.5);
+		box-shadow: rgb(255 255 255 / 50%) 0px 0px 1px;
+	}
+`
+const GalleryItem = styled.div`
 	border: 1px solid white;
-	cursor: pointer;
+	transition: all 0.3s linear;
 	&:hover {
 		border-color: #1d1f22;
 	}
+`
+const GalleryImage = styled.div`
+	width: 80px;
+	height: 80px;
+	cursor: pointer;
+
 	& img {
-		padding: 3px;
 		width: 80px;
 		height: 80px;
 		object-fit: cover;

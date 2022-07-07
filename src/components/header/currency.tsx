@@ -1,20 +1,26 @@
 import React from "react"
 import { connect, ConnectedProps } from "react-redux"
 import styled from "styled-components"
-import arrow from "../../../public/arrow.svg"
-import { changeCurrency } from "../../../redux/slicers/cartSlice"
-import { RootState } from "../../../redux/store"
-import { currencies } from "./currencies"
+import { getCurrencies } from "../../lib/opus"
+import arrow from "../../public/arrow.svg"
+import { changeCurrency } from "../../redux/slicers/cartSlice"
+import { RootState } from "../../redux/store"
 
+interface Currency {
+	label: string
+	symbol: string
+}
 interface State {
 	currencyMenu: boolean
+	currencies: Currency[]
 }
 
 class Cs extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props)
 		this.state = {
-			currencyMenu: false
+			currencyMenu: false,
+			currencies: []
 		}
 	}
 
@@ -34,11 +40,15 @@ class Cs extends React.Component<Props, State> {
 		this.props.changeCurrency(currency)
 	}
 	componentDidMount() {
-		document.addEventListener("click", this.handleClickOutside)
+		window.addEventListener("click", this.handleClickOutside)
+		getCurrencies().then((currencies) => {
+			let typedCurrencies = currencies as unknown as Currency[]
+			this.setState({ currencies: typedCurrencies })
+		})
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener("click", this.handleClickOutside)
+		window.removeEventListener("click", this.handleClickOutside)
 	}
 
 	render() {
@@ -50,17 +60,18 @@ class Cs extends React.Component<Props, State> {
 				</div>
 				<Menu active={this.state.currencyMenu}>
 					<ul>
-						{currencies.map((item) => (
-							<MenuLi
-								key={item.label}
-								onClick={() => {
-									this.handleCurrency({ label: item.label, symbol: item.symbol })
-								}}
-								selected={item.label === this.props.price.label ? true : false}
-							>
-								{item.symbol} {item.label}
-							</MenuLi>
-						))}
+						{this.state.currencies.length > 0 &&
+							this.state.currencies.map((item) => (
+								<MenuLi
+									key={item.label}
+									onClick={() => {
+										this.handleCurrency({ label: item.label, symbol: item.symbol })
+									}}
+									selected={item.label === this.props.price.label ? true : false}
+								>
+									{item.symbol} {item.label}
+								</MenuLi>
+							))}
 					</ul>
 				</Menu>
 			</Currency>

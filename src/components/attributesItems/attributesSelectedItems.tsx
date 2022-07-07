@@ -7,7 +7,7 @@ export class AttributesSelectedItems extends React.Component<{ attributes: Modif
 		return (
 			<>
 				{this.props.attributes.map((item) => (
-					<div key={item.name} style={{ marginTop: "5px" }}>
+					<Wrapper key={item.name}>
 						<AttributeTitle>{item.name}</AttributeTitle>
 						<AttributeItemWrapper>
 							{item.type === "swatch"
@@ -29,12 +29,16 @@ export class AttributesSelectedItems extends React.Component<{ attributes: Modif
 										</AttributeItem>
 								  ))}
 						</AttributeItemWrapper>
-					</div>
+					</Wrapper>
 				))}
 			</>
 		)
 	}
 }
+
+const Wrapper = styled.div`
+	margin-top: 5px;
+`
 
 const AttributeTitle = styled.p``
 

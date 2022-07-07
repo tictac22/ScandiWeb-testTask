@@ -27,6 +27,7 @@ class ProductItem extends React.Component<Props, { attributes: ProductState[] }>
 			]
 		}
 	}
+	ref = React.createRef<HTMLAnchorElement>()
 	pushTo = (isAvaible: boolean) => {
 		return (e: React.MouseEvent) => {
 			if (!isAvaible) e.preventDefault()
@@ -52,18 +53,20 @@ class ProductItem extends React.Component<Props, { attributes: ProductState[] }>
 			id: this.props.id,
 			attributes: this.state.attributes,
 			prices: this.props.prices,
-			gallery: this.props.gallery
+			gallery: this.props.gallery,
+			brand: this.props.brand
 		})
 	}
 	render() {
 		return (
-			<Link onClick={this.pushTo(this.props.inStock)} to={`/product/${this.props.id}`}>
+			<Link onClick={this.pushTo(this.props.inStock)} to={`/product/${this.props.id}`} ref={this.ref}>
 				<Wrapper id={`${this.props.name}`} avaible={this.props.inStock}>
 					{!this.props.inStock && <NotAvaible>out of stock</NotAvaible>}
 					<ImageWrapper>
 						<Image src={this.props.gallery[0]} alt={this.props.name} loading="lazy" />
 					</ImageWrapper>
 					<Description>
+						<div>{this.props.brand}</div>
 						<Name>{this.props.name}</Name>
 						<Price>{getCurrentPrice(this.props.price.label, this.props.prices)}</Price>
 						<Attributes>
@@ -164,7 +167,9 @@ const Cart = styled.div`
 const Description = styled.div`
 	margin-top: 24px;
 `
+
 const Name = styled.p`
+	margin-top: 6px;
 	font-weight: 300;
 `
 

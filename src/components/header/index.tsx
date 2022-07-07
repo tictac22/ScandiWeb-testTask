@@ -19,8 +19,9 @@ class header extends React.Component<RouteComponentProps, { active: string }> {
 			active: "All"
 		}
 	}
+	ref = React.createRef<HTMLDivElement>()
 	addStickyHeader = () => {
-		const header = document.getElementById("header")!
+		const header = this.ref.current!
 		if (window.scrollY > header.clientHeight) {
 			header.classList.add("sticky")
 		} else {
@@ -41,7 +42,7 @@ class header extends React.Component<RouteComponentProps, { active: string }> {
 	}
 	render() {
 		return (
-			<HeaderWrapper id="header">
+			<HeaderWrapper ref={this.ref} id="header">
 				<HeaderInner>
 					<nav>
 						<Ul>

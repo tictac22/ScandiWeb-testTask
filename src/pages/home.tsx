@@ -24,7 +24,6 @@ class Home extends React.Component<RouteComponentProps<{ product: string }>, Sta
 	}
 	getProducts = async () => {
 		this.setState({ isLoading: true })
-		console.log(this.props)
 		const category = this.props.match.params.product ?? "all"
 		try {
 			const data = await getProductsByCategory(category)
@@ -44,8 +43,8 @@ class Home extends React.Component<RouteComponentProps<{ product: string }>, Sta
 	}
 	render() {
 		return (
-			<Wrapper>
-				<div className="container" style={{ position: "relative" }}>
+			<main>
+				<WrapperInner className="container">
 					<Toast />
 					<PageTitle>{this.props.match.url.split("/")[1] || "all"}</PageTitle>
 					{this.state.isLoading ? (
@@ -54,7 +53,7 @@ class Home extends React.Component<RouteComponentProps<{ product: string }>, Sta
 						<Error>Error on server side, please retry</Error>
 					) : (
 						<ProductWrapper>
-							{this.state.products.map((item) => (
+							{this.state.products.map((item, index) => (
 								<Product
 									id={item.id}
 									gallery={item.gallery}
@@ -63,18 +62,21 @@ class Home extends React.Component<RouteComponentProps<{ product: string }>, Sta
 									prices={item.prices}
 									name={item.name}
 									key={item.name}
+									brand={item.brand}
 								/>
 							))}
 						</ProductWrapper>
 					)}
-				</div>
-			</Wrapper>
+				</WrapperInner>
+			</main>
 		)
 	}
 }
 export const HomePage = withRouter(Home)
 
-const Wrapper = styled.main``
+const WrapperInner = styled.div`
+	position: relative;
+`
 const PageTitle = styled.h1`
 	text-transform: capitalize;
 	color: #1d1f22;

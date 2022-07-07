@@ -13,7 +13,7 @@ class CartC extends React.Component<PropsRedux> {
 			<div className="container">
 				<Title>cart</Title>
 				{this.props.cartItems.length <= 0 ? (
-					<p style={{ textAlign: "center" }}>Your cart is empty, select any product to see it</p>
+					<Empty>Your cart is empty, select any product to see it</Empty>
 				) : (
 					<>
 						<div>
@@ -29,6 +29,7 @@ class CartC extends React.Component<PropsRedux> {
 									currentCurrency={this.props.currentCurrency.label}
 									incrementCountItem={this.props.incrementCountItem}
 									decrementCountItem={this.props.decrementCountItem}
+									brand={item.brand}
 								/>
 							))}
 						</div>
@@ -45,13 +46,11 @@ class CartC extends React.Component<PropsRedux> {
 								<TotalPrice>{this.props.totalCount}</TotalPrice>
 							</TotalWrapper>
 							<TotalWrapper>
-								<TotalName margin={44} style={{ fontWeight: "500" }}>
-									Total:
-								</TotalName>
+								<TotalName margin={44}>Total:</TotalName>
 								<TotalPrice>
 									{this.props.currentCurrency.symbol}
 									{this.props.totalPrice}
-									<p style={{ display: "inline-block", margin: "0 5px" }}>+ Tax =</p>
+									<Tax>+ Tax =</Tax>
 									{this.props.currentCurrency.symbol}
 									{formatNumber(this.props.totalPriceInNumber + tax)}
 								</TotalPrice>
@@ -91,7 +90,9 @@ const Title = styled.h1`
 	font-size: 32px;
 	margin-bottom: 50px;
 `
-
+const Empty = styled.p`
+	text-align: center;
+`
 const Total = styled.div`
 	margin-top: 32px;
 `
@@ -104,7 +105,7 @@ interface ITotalName {
 	margin: number
 }
 const TotalName = styled.p<ITotalName>`
-	font-weight: 400;
+	font-weight: ${(props) => (props.margin === 44 ? "500" : "400")};
 	font-size: 24px;
 	margin-right: ${(props) => props.margin + "px"};
 `
@@ -112,7 +113,10 @@ const TotalPrice = styled.p`
 	font-weight: 700;
 	font-size: 24px;
 `
-
+const Tax = styled.p`
+	display: inline-block;
+	margin: 0 5px;
+`
 const Button = styled.button`
 	margin-top: 16px;
 	max-width: 279px;

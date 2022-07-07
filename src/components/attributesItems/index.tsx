@@ -8,7 +8,7 @@ export class AttributesItems extends React.Component<Props> {
 			<>
 				{this.props.attributes.length !== 0 &&
 					this.props.attributes.map((item) => (
-						<div key={item.name} style={{ marginTop: "10px" }}>
+						<Wrapper key={item.name}>
 							<AttributeTitle>{item.name}:</AttributeTitle>
 							<AttributeItemsWrapper>
 								{item.items.map((values) =>
@@ -55,7 +55,7 @@ export class AttributesItems extends React.Component<Props> {
 									)
 								)}
 							</AttributeItemsWrapper>
-						</div>
+						</Wrapper>
 					))}
 			</>
 		)
@@ -73,7 +73,9 @@ interface IAttributeSwatchItems {
 	selected: boolean
 	isAvaible: boolean
 }
-
+const Wrapper = styled.div`
+	margin-top: 20px;
+`
 const AttributeSwatchItems = styled.div<IAttributeSwatchItems>`
 	margin-top: 10px;
 	margin-left: 10px;

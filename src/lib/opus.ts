@@ -1,7 +1,7 @@
 import { client, Field, Query } from "@tilework/opus"
 
 //https://testtak-backend.herokuapp.com
-client.setEndpoint("https://testtak-backend.herokuapp.com")
+client.setEndpoint("http://localhost:4000/")
 client.setHeaders({
 	"Access-Control-Allow-Origin": "https://stellular-travesseiro-7f8550.netlify.app",
 	"Access-Control-Allow-Credentials": "true"
@@ -12,7 +12,7 @@ export const getProductsByCategory = async (title: string) => {
 		.addField("name")
 		.addField(
 			new Field("products")
-				.addFieldList(["name", "id"])
+				.addFieldList(["name", "id", "brand"])
 				.addField(
 					new Field("attributes")
 						.addFieldList(["name", "type"])
@@ -32,7 +32,7 @@ export const getProductsByCategory = async (title: string) => {
 export const getProductById = async (id: string) => {
 	const query = new Query("product")
 		.addArgument("id", "String!", id)
-		.addFieldList(["name", "description", "gallery", "id"])
+		.addFieldList(["name", "description", "gallery", "id", "brand"])
 		.addField(
 			new Field("prices").addField("amount").addField(new Field("currency").addFieldList(["label", "symbol"]))
 		)
@@ -43,4 +43,10 @@ export const getProductById = async (id: string) => {
 		)
 	const queryResult = await client.post(query)
 	return queryResult.product
+}
+
+export const getCurrencies = async () => {
+	const query = new Query("currencies").addFieldList(["label", "symbol"])
+	const queryResult = await client.post(query)
+	return queryResult.currencies
 }

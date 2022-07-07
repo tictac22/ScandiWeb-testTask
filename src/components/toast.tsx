@@ -23,7 +23,7 @@ class ToastC extends React.Component<Props, { top: number; timer: null | setTime
 					this.props.hideToast()
 				}, 2000)
 			})
-			const product = document.documentElement.scrollTop
+			const product = window.pageYOffset
 			this.setState({ top: product })
 		}
 	}

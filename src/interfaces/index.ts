@@ -5,6 +5,7 @@ export interface IProduct {
 	gallery: string[]
 	prices: Prices[]
 	attributes: Attribute[]
+	brand: string
 }
 export interface Prices {
 	amount: number
@@ -21,6 +22,7 @@ export interface ProductPageData {
 	prices: Prices[]
 	attributes: Attribute[]
 	id: string
+	brand: string
 }
 export interface ProductState {
 	name: string
@@ -34,6 +36,7 @@ export interface CartItemProps {
 	name: string
 	id: string
 	gallery: string[]
+	brand: string
 	attributes: ModifiedAttributes[]
 	prices: Prices[]
 	count: number

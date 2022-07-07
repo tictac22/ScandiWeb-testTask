@@ -2,17 +2,18 @@ import React from "react"
 import { connect, ConnectedProps } from "react-redux"
 import { RouteComponentProps, withRouter } from "react-router-dom"
 import styled from "styled-components"
-import { addPaging } from "../../../lib/functions"
 import { RootState } from "../../../redux/store"
 import { CartHeader } from "./cartHeader"
 import { CartItem } from "./cartItem"
 
 import { Link } from "react-router-dom"
+import { BodyContext } from "../../../context"
 interface State {
 	active: boolean
 }
 
 class CartC extends React.Component<PropsRedux & RouteComponentProps, State> {
+	static contextType = BodyContext
 	constructor(props: PropsRedux & RouteComponentProps) {
 		super(props)
 		this.state = {
@@ -22,16 +23,11 @@ class CartC extends React.Component<PropsRedux & RouteComponentProps, State> {
 	ref = React.createRef<HTMLDivElement>()
 
 	handleBag = () => {
-		if (window.innerWidth <= 600) {
-			this.props.history.push("/user/cart")
-			return
-		}
-		addPaging(this.state.active)
+		const history = this.props.history
+		//@ts-ignore
+		const active = this.context.handleBag(history, this.state.active)
 
-		const mainBody = document.getElementById("main_home")!
-		this.state.active ? mainBody.classList.remove("home_main") : mainBody.classList.add("home_main")
-
-		this.setState({ active: !this.state.active })
+		this.setState({ active })
 	}
 	handleClickOutside = (event: MouseEvent) => {
 		const target = event.target!
@@ -41,7 +37,7 @@ class CartC extends React.Component<PropsRedux & RouteComponentProps, State> {
 		}
 	}
 	componentDidMount() {
-		document.addEventListener("click", this.handleClickOutside)
+		window.addEventListener("click", this.handleClickOutside)
 	}
 	componentDidUpdate(prevProps: PropsRedux) {
 		if (prevProps.totalCount !== this.props.totalCount) {
@@ -49,7 +45,7 @@ class CartC extends React.Component<PropsRedux & RouteComponentProps, State> {
 		}
 	}
 	componentWillUnmount() {
-		document.removeEventListener("click", this.handleClickOutside)
+		window.removeEventListener("click", this.handleClickOutside)
 	}
 	render() {
 		return (
@@ -57,10 +53,10 @@ class CartC extends React.Component<PropsRedux & RouteComponentProps, State> {
 				<CartHeader handleBag={this.handleBag} />
 				<Bag active={this.state.active}>
 					<BagWrapper>
-						<div style={{ display: "flex", alignItems: "center" }}>
+						<BagDescription>
 							<BagTitle>My Bag,</BagTitle>
 							<BagCount>{this.props.totalCount} items</BagCount>
-						</div>
+						</BagDescription>
 						<CartItems>
 							{this.props.cartItems.length > 0 &&
 								this.props.cartItems.map((item) => (
@@ -75,6 +71,7 @@ class CartC extends React.Component<PropsRedux & RouteComponentProps, State> {
 										id={item.id}
 										gallery={item.gallery}
 										currentCurrency={this.props.currentCurrency.label}
+										brand={item.brand}
 									/>
 								))}
 						</CartItems>
@@ -142,6 +139,10 @@ const BagWrapper = styled.div`
 	@media (max-width: 350px) {
 		padding: 32px 32px;
 	}
+`
+const BagDescription = styled.div`
+	display: flex;
+	align-items: center;
 `
 const BagTitle = styled.h2`
 	font-weight: 700;
