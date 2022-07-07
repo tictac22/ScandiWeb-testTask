@@ -21,3 +21,12 @@ I did the same as with currencies. If they can't be hardcoded now they come from
 
 I removed everywhere document API and replaced with `ref`. I left it only in `addPading` function in `lib/functions.ts`. 
 To get a width of the scroll it's the only way and the same with `document.body` it's the only way to refer to it.
+
+Tech stack:
+- React
+- Typescript
+- Redux
+- Styled-components
+- @tilework/opus
+
+Link to app: https://stellular-travesseiro-7f8550.netlify.app/
