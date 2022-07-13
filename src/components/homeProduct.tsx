@@ -36,23 +36,21 @@ class ProductItem extends React.Component<Props> {
 	}
 	render() {
 		return (
-			<Link onClick={this.pushTo(this.props.inStock)} to={`/product/${this.props.id}`} ref={this.ref}>
+			<Link to={`/product/${this.props.id}`} ref={this.ref}>
 				<Wrapper id={`${this.props.name}`} avaible={this.props.inStock}>
 					{!this.props.inStock && <NotAvaible>out of stock</NotAvaible>}
 					<ImageWrapper>
 						<Image src={this.props.gallery[0]} alt={this.props.name} loading="lazy" />
+						{this.props.inStock && (
+							<Cart onClick={this.addToCart} className="cart">
+								<img src={cart} alt="put to cart" />
+							</Cart>
+						)}
 					</ImageWrapper>
 					<Description>
 						<div>{this.props.brand}</div>
 						<Name>{this.props.name}</Name>
 						<Price>{getCurrentPrice(this.props.price.label, this.props.prices)}</Price>
-						<Attributes>
-							{this.props.inStock && (
-								<Cart onClick={this.addToCart} className="cart">
-									<img src={cart} alt="put to cart" />
-								</Cart>
-							)}
-						</Attributes>
 					</Description>
 				</Wrapper>
 			</Link>
@@ -108,13 +106,19 @@ const NotAvaible = styled.p`
 const ImageWrapper = styled.div`
 	position: relative;
 	display: block;
-	width: 100%;
+	max-width: 354px;
+	height: 330px;
 `
 const Image = styled.img`
-	object-fit: cover;
+	max-width: 100%;
+	max-height: 100%;
 	width: 100%;
+	object-fit: scale-down;
 `
 const Cart = styled.div`
+	position: absolute;
+	right: 15px;
+	bottom: -26px;
 	transition: all 0.3s linear;
 	opacity: 0;
 	z-index: 5;
@@ -145,9 +149,5 @@ const Name = styled.p`
 
 const Price = styled.p`
 	font-weight: 500;
-	margin-top: 8px;
-`
-
-const Attributes = styled.div`
 	margin-top: 8px;
 `

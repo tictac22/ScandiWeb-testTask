@@ -37,7 +37,8 @@ class Products extends Component<Props, State> {
 				prices: [],
 				attributes: [],
 				id: "",
-				brand: ""
+				brand: "",
+				inStock: false
 			},
 			mainImage: "",
 			attributes: [],
@@ -108,17 +109,23 @@ class Products extends Component<Props, State> {
 								{this.state.pageData.prices.length > 0 &&
 									getCurrentPrice(this.props.selectedCurrency.label, this.state.pageData.prices)}
 							</PriceText>
-							<AddTo
-								className="btn"
-								disabled={
-									this.state.notSelected && this.state.attributes.find((item) => !item.selected)
-										? true
-										: false
-								}
-								onClick={this.addToCart}
-							>
-								add to cart
-							</AddTo>
+							{this.state.pageData.inStock ? (
+								<AddTo
+									className="btn"
+									disabled={
+										this.state.notSelected && this.state.attributes.find((item) => !item.selected)
+											? true
+											: false
+									}
+									onClick={this.addToCart}
+								>
+									add to cart
+								</AddTo>
+							) : (
+								<AddTo className="btn" disabled={true}>
+									OUT OF STOCK
+								</AddTo>
+							)}
 							{(this.state.notSelected && this.state.attributes.find((item) => !item.selected)
 								? true
 								: false) && <NotSelected>Select all attributes</NotSelected>}
@@ -174,6 +181,7 @@ const AttributesWrapper = styled.div`
 `
 
 const PriceTitle = styled.p`
+	margin-top: 18px;
 	@media (min-width: 920px) {
 		margin-top: 36px;
 	}
@@ -208,5 +216,8 @@ const Description = styled.div`
 		font-size: 16px;
 		font-family: "Roboto", sans-serif;
 		line-height: 159.96%;
+	}
+	& li {
+		margin-top: 7px;
 	}
 `

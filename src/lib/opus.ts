@@ -32,7 +32,7 @@ export const getProductsByCategory = async (title: string) => {
 export const getProductById = async (id: string) => {
 	const query = new Query("product")
 		.addArgument("id", "String!", id)
-		.addFieldList(["name", "description", "gallery", "id", "brand"])
+		.addFieldList(["name", "description", "gallery", "id", "brand", "inStock"])
 		.addField(
 			new Field("prices").addField("amount").addField(new Field("currency").addFieldList(["label", "symbol"]))
 		)

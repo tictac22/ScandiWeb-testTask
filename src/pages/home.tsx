@@ -82,7 +82,8 @@ const PageTitle = styled.h1`
 `
 const ProductWrapper = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(285px, 300px));
+	grid-template-columns: repeat(auto-fit, minmax(285px, 386px));
+	//grid-template-columns: 386px 386px 386px;
 	grid-gap: 40px;
 	@media (min-width: 576px) {
 		margin-top: 55px;

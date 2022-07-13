@@ -23,6 +23,7 @@ export interface ProductPageData {
 	attributes: Attribute[]
 	id: string
 	brand: string
+	inStock: boolean
 }
 export interface ProductState {
 	name: string

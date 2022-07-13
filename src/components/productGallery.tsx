@@ -83,7 +83,6 @@ const GalleryMain = styled.div`
 const GalleryWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	@media (min-width: 920px) {
 		margin-right: 40px;
 		& div:not(:first-child) {
